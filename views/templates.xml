@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <template id="new_template_hrms">
+            <t t-extend="OpenHRMS.LoginEmployeeDetails">
+                <t t-jquery="ul" t-operation="append">
+                    <li>new element</li>
+                </t>
+            </t>
+        </template>
+        <template id="object">
+            <h1>
+                <t t-esc="object.display_name"/>
+            </h1>
+            <dl>
+                <t t-foreach="object._fields" t-as="field">
+                    <dt>
+                        <t t-esc="field"/>
+                    </dt>
+                    <dd>
+                        <t t-esc="object[field]"/>
+                    </dd>
+                </t>
+            </dl>
+        </template>
+    </data>
+</odoo>

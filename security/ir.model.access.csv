@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crapt_hack_crapt_hack,access.crapt_hack.crapt_hack,model_crapt_hack_crapt_hack,,1,1,1,1
+access_help_volunteers,access.help.volunteers,model_help_volunteers,,1,1,1,1
+access_help_doctors,access.help.doctors,model_help_doctors,,1,1,1,1

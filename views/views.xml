@@ -1,0 +1,195 @@
+<odoo>
+    <record id="crapt_hack_crapt_hack_form_id" model="ir.ui.view">
+        <field name="name">crapt_hack.crapt_hack.form</field>
+        <field name="model">crapt_hack.crapt_hack</field>
+        <field name="arch" type="xml">
+            <form string="Form view">
+                <header>
+                    <field name="state" widget="statusbar"/>
+                    <button name="send_to_specialist" type="object" string="Отправить к специалисту"
+                            class="oe_highlight"
+                            title="Отправить к специалисту"
+                            aria-label="Отправить к специалисту"
+                            attrs="{'invisible': [('state', 'not in', ('Обращения'))]}"/>
+                    <button name="end_with_specialist" type="object" string="Завершить встречу"
+                            class="oe_highlight"
+                            title="Завершить встречу"
+                            aria-label="Завершить встречу"
+                            attrs="{'invisible': [('state', 'not in', ('Назначена встреча'))]}"/>
+                    <button name="send_with_specialist" type="object" string="Отправить на реабилитацию"
+                            class="oe_highlight"
+                            title="Отправить на реабилитацию"
+                            aria-label="Отправить на реабилитацию"
+                            attrs="{'invisible': [('state', 'not in', ('Встреча была'))]}"/>
+                    <button name="finish_with_specialist" type="object" string="Помогли полностью"
+                            class="oe_highlight"
+                            title="Помогли полностью"
+                            aria-label="Помогли полностью"
+                            attrs="{'invisible': [('state', 'not in', ('Отправлено на реабилитацию'))]}"/>
+                </header>
+                <sheet>
+                    <h4>
+                        <field name="name"/>
+                    </h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <field name="image_1920" widget="image" class="oe_avatar"/>
+                            </div>
+                            <div class="col">
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="age"/>
+                                    <field name="tel_number"/>
+                                    <field name="email"/>
+                                </group>
+                            </div>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Причина обращение">
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </page>
+                        <page string="Диагноз от детского психолога"
+                              attrs="{'invisible': [('name', '!=', 'Направление к детскому психологу')]}">
+                            <group>
+                                <field name="doctor_id"/>
+                                <field name="diagnos"/>
+                                <field name="future_help"/>
+                            </group>
+                        </page>
+                        <page string="Диагноз от соционального психолога">
+                            <group>
+                                <field name="doctor_id"/>
+                                <field name="diagnos"/>
+                                <field name="future_help"/>
+                            </group>
+                        </page>
+                        <page string="Диагноз от кризисного психолога"
+                              attrs="{'invisible': [('name', '!=', 'Направление к кризисному психологу')]}">
+                            <group>
+                                <field name="doctor_id"/>
+                                <field name="diagnos"/>
+                                <field name="future_help"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="crapt_hack_crapt_hack_kanban_id" model="ir.ui.view">
+        <field name="name">Kanban</field>
+        <field name="model">crapt_hack.crapt_hack</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="1" class="o_res_partner_kanban">
+                <field name="id"/>
+                <field name="image_1920"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click o_res_partner_kanban">
+                            <div class="o_kanban_image">
+                                <t t-if="record.image_1920.value">
+                                    <img t-att-src="kanban_image('crapt_hack.crapt_hack', 'image_1920', record.id.raw_value)"
+                                         alt="Student"/>
+                                </t>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <h4>
+                                    <a type="open">
+                                        <field name="name"/>
+                                    </a>
+                                </h4>
+                                <ul>
+                                    <li t-if="record.user_id.raw_value">
+                                        <field name="user_id"/>
+                                    </li>
+                                    <li t-if="record.age.raw_value">
+                                        <field name="age"/>
+                                    </li>
+                                    <li t-if="record.tel_number.raw_value">
+                                        <field name="tel_number"/>
+                                    </li>
+                                    <li t-if="record.email.raw_value">
+                                        <field name="email"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="crapt_hack_crapt_hack_graph" model="ir.ui.view">
+        <field name="name">crapt_hack.crapt_hack.graph</field>
+        <field name="model">crapt_hack.crapt_hack</field>
+        <field name="arch" type="xml">
+            <graph string="Запросы">
+                <field name="state" type="row"/>
+                <field name="user_id" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="help_doctors_graph" model="ir.ui.view">
+        <field name="name">help.doctors.graph</field>
+        <field name="model">help.doctors</field>
+        <field name="arch" type="xml">
+            <graph string="Запросы">
+                <field name="name" type="row"/>
+                <field name="how_many_patients" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="help_volunteers_tree_id" model="ir.ui.view">
+        <field name="name">help.volunteers.tree</field>
+        <field name="model">help.volunteers</field>
+        <field name="arch" type="xml">
+            <tree string="Volunteers" editable="bottom">
+                <field name="name"/>
+                <field name="priority" widget="priority"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record model="ir.actions.act_window" id="request_action">
+        <field name="name">Crack Hack</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">crapt_hack.crapt_hack</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">kanban,tree,graph,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="Volunteer_action">
+        <field name="name">Crack Hack</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">help.volunteers</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record model="ir.actions.act_window" id="doctors_action">
+        <field name="name">Crack Hack</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">help.doctors</field>
+        <field name="binding_view_types">form</field>
+        <field name="view_mode">tree,graph,form</field>
+    </record>
+
+    <menuitem id="request_forms" name="Обращении"
+              groups="base.group_user"
+              web_icon="crapt_hack,static/description/odoo_icon.png"
+              sequence="21"/>
+    <menuitem id="request_forms_request" parent="request_forms" name="Заявление"
+              action="request_action" groups="base.group_user" sequence="4"/>
+    <menuitem id="request_forms_request_1" parent="request_forms" name="Волонтерство"
+              action="Volunteer_action" groups="base.group_user" sequence="5"/>
+    <menuitem id="request_forms_request_2" parent="request_forms" name="Специалисты"
+              action="doctors_action" groups="base.group_user" sequence="6"/>
+</odoo>
